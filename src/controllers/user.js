@@ -12,7 +12,7 @@ export const crearUsuario = async (req = request, res = response) => {
 
         const userFind = await User.findOne({ username })
 
-        if (userFind) { return res.status(400).json({ msg: `El usuario ${username} ya se encuentra registrado` }) } 
+        if (userFind) { return res.status(400).json({ msg: `El usuario ${username} ya se encuentra registrado` }) }
 
         const hashPassword = convertPasswordToHash(password)
 
@@ -34,11 +34,18 @@ export const iniciarSesion = async (req = request, res = response) => {
 
         if (!userFind) { return res.status(401).json({ msg: `Usuario y Contraseña invalidos` }) }
 
-        if(!validarPassword(userFind.password, password)) { return res.status(401).json({ msg: `Usuario y Contraseña invalidos` }) }
+        if (!validarPassword(userFind.password, password)) { return res.status(401).json({ msg: `Usuario y Contraseña invalidos` }) }
 
-        
-        const token = crearToken()
+        const userObject = {
+            "id": userFind._id,
+            "username": userFind.username
+        }
+
+        const token = crearToken(userObject)
+
+        return res.status(200).json({ token })
     } catch (error) {
+        return res.status(500).json({ msg: `Error del servidor ${error}` });
 
     }
 }

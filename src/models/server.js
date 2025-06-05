@@ -2,7 +2,9 @@ import express from 'express'
 import http from 'http'
 import {Server as socketio} from 'socket.io'
 import cors from 'cors'
+
 import Chat from './chat.js'
+import routes from '../routes/index.js'
 
 class Server{
 
@@ -22,6 +24,7 @@ class Server{
 
         this.app.use(cors())
         this.app.use(express.json())
+        this.app.use('/api', routes)
     }
 
     configuracionChat(){
