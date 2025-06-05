@@ -1,0 +1,46 @@
+import express from 'express'
+import http from 'http'
+import {Server as socketio} from 'socket.io'
+import cors from 'cors'
+import Chat from './chat.js'
+
+class Server{
+
+    constructor(){
+
+        this.app = express()
+        this.port = process.env.PORT || 3000
+
+
+        this.server = http.createServer(this.app)
+
+        this.io = new socketio(this.server, {})
+    }
+
+
+    middlewares(){
+
+        this.app.use(cors())
+        this.app.use(express.json())
+    }
+
+    configuracionChat(){
+
+        new Chat(this.io)
+    }
+
+    executeServer(){
+
+        this.middlewares()
+        
+        this.configuracionChat()
+
+
+        this.server.listen(this.port, () => {
+            console.log(`Servidor Ejecutandose en puerto ${this.port}`)
+        })
+    }
+
+}
+
+export default Server
