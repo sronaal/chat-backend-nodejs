@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import ConexionDB from "./database.js";
 import Server from "./models/server.js";
 
