@@ -1,8 +1,10 @@
-import routes from "./user.js";
-
+import { Router } from 'express'
 import routesUser from './user.js'
 
-routes.use('user', routes)
+
+const routes = Router()
+
+routes.use('/user', routesUser)
 
 
 
