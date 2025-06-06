@@ -14,7 +14,7 @@ export const crearUsuario = async (req = request, res = response) => {
 
         if (userFind) { return res.status(400).json({ msg: `El usuario ${username} ya se encuentra registrado` }) }
 
-        const hashPassword = convertPasswordToHash(password)
+        const hashPassword = await convertPasswordToHash(password)
 
         await User.create({ username, password: hashPassword })
 
