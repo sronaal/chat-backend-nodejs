@@ -45,6 +45,7 @@ export const iniciarSesion = async (req = request, res = response) => {
 
         return res.status(200).json({ token })
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ msg: `Error del servidor ${error}` });
 
     }

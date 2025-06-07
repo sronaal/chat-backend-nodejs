@@ -16,7 +16,12 @@ class Server{
 
         this.server = http.createServer(this.app)
 
-        this.io = new socketio(this.server, {})
+        this.io = new socketio(this.server, {
+            cors:{
+                origin: 'http://localhost:5173/',
+                methods:['GET', 'POST']
+            }
+        })
     }
 
 
