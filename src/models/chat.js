@@ -29,6 +29,7 @@ class Chat {
 
             // Escucha el evento 'enviar-mensajes' enviado por el cliente
             socket.on('enviar-mensajes', async (data) => {
+                console.log(data)
                 const { sender, receiver, content } = data
 
                 try {
@@ -36,6 +37,7 @@ class Chat {
                     const message = new Message({ sender, receiver, content })
                     await message.save()
                     const mensajeObject = message.toObject()
+
                     socket.emit('enviar-mensaje', mensajeObject )
                 } catch (error) {
                     // Maneja errores al guardar el mensaje
