@@ -38,12 +38,14 @@ class Chat {
                     await message.save()
                     const mensajeObject = message.toObject()
 
-                    socket.emit('enviar-mensaje', mensajeObject )
+                    this.io.emit('enviar-mensaje', mensajeObject )
                 } catch (error) {
                     // Maneja errores al guardar el mensaje
                     throw `Error al guardar el mensaje ${error}`
                 }
             })
+
+            
         })
     }
 }
