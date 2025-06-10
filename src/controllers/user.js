@@ -3,14 +3,14 @@ import User from "../models/userSchema.js";
 import { convertPasswordToHash, validarPassword } from '../libs/bcrypt.js'
 import { crearToken } from "../libs/jwt.js";
 
-import {subirBufferACloudinary} from '../libs/cloudinary.js'
+import { subirBufferACloudinary } from '../libs/cloudinary.js'
 
 export const crearUsuario = async (req = request, res = response) => {
 
-    const { username, password} = req.body
+    const { username, password } = req.body
     console.log(username, password)
 
-   
+
     try {
 
         const userFind = await User.findOne({ username })
@@ -19,18 +19,19 @@ export const crearUsuario = async (req = request, res = response) => {
 
         const hashPassword = await convertPasswordToHash(password)
         console.log(req.file)
-      
-        const imageUpload = await subirBufferACloudinary(req.file.buffer)
-       
-    
-        await User.create({ username, password: hashPassword, photoURL: imageUpload.url })
 
-        return res.status(201).json({ msg: 'Usuario creado exitosamente' })
+        const imageUpload = await subirBufferACloudinary(req.file.buffer)
+
+
+        const usuario = await User.create({ username, password: hashPassword, photoURL: imageUpload.url })
+
+        const token = crearToken({ id: usuario._id, username: usuario.username })
+        return res.status(201).json({ token })
 
     } catch (error) {
         return res.status(500).json({ msg: `Error del servidor ${error}` });
     }
-    
+
 };
 
 
