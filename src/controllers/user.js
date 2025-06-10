@@ -1,13 +1,16 @@
 import { request, response } from "express";
-
 import User from "../models/userSchema.js";
 import { convertPasswordToHash, validarPassword } from '../libs/bcrypt.js'
 import { crearToken } from "../libs/jwt.js";
 
+import {subirBufferACloudinary} from '../libs/cloudinary.js'
+
 export const crearUsuario = async (req = request, res = response) => {
 
-    const { username, password } = req.body
+    const { username, password} = req.body
+    console.log(username, password)
 
+   
     try {
 
         const userFind = await User.findOne({ username })
@@ -15,14 +18,19 @@ export const crearUsuario = async (req = request, res = response) => {
         if (userFind) { return res.status(400).json({ msg: `El usuario ${username} ya se encuentra registrado` }) }
 
         const hashPassword = await convertPasswordToHash(password)
-
-        await User.create({ username, password: hashPassword })
+        console.log(req.file)
+      
+        const imageUpload = await subirBufferACloudinary(req.file.buffer)
+       
+    
+        await User.create({ username, password: hashPassword, photoURL: imageUpload.url })
 
         return res.status(201).json({ msg: 'Usuario creado exitosamente' })
 
     } catch (error) {
         return res.status(500).json({ msg: `Error del servidor ${error}` });
     }
+    
 };
 
 
