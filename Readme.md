@@ -36,6 +36,11 @@ Este proyecto es el backend de una aplicación de chat en tiempo real, construid
 
 ---
 
+## ⚙️ Configuración de entorno (.env)
+
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
+```env
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/chatdb
 JWT_SECRET=tu_clave_secreta
